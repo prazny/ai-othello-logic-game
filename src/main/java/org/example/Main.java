@@ -52,7 +52,7 @@ public class Main {
     public static void main(String[] args) {
 
         GameGui gameGui = new GraphicalGameGui();
-        Player playerA = new ComputerPlayer("A", Color.BLACK, new Minimax(new TilesCountHeuristic(), 3));
+        Player playerA = new ComputerPlayer("A", Color.BLACK, new AlphaBeta(new TilesCountHeuristic(), 5));
         Player playerB = new ComputerPlayer("B", Color.WHITE, new AlphaBeta(new TilesCountHeuristic(), 5));
         //Player playerA = new GuiPlayer("A", Color.BLACK);
         //Player playerB = new GuiPlayer("B", Color.WHITE);

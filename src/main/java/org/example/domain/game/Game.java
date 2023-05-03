@@ -167,20 +167,21 @@ public class Game {
 
             }
         }
-        isPlayerAMove = !isPlayerAMove;
-        roundsCount++;
-
-        updateValidMoves();
+        nextRound();
         checkIfGameIsFinished();
     }
 
     public void skipPlayer() throws GameFinished {
         if (isGameFinished) throw new GameFinished();
+
+        nextRound();
+        checkIfGameIsFinished();
+    }
+
+    private void nextRound() {
         isPlayerAMove = !isPlayerAMove;
         roundsCount++;
-
         updateValidMoves();
-        checkIfGameIsFinished();
     }
 
 
@@ -191,10 +192,9 @@ public class Game {
             if (validMoves.size() > 0)
                 return;
 
-            isPlayerAMove = !isPlayerAMove;
-            updateValidMoves();
+            nextRound();
 
-            if (i == 2) {
+            if (i > 1) {
                 finishGame();
                 return;
             }
