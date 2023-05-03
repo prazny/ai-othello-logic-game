@@ -33,7 +33,6 @@ public class GameRunnerImpl implements org.example.runner.GameRunner {
             gameGui.setBoard(game.getBoard(), game.getValidMoves());
 
             //System.out.println("Valid moves: " + getValidMoves());
-
             while(true) {
                 if(game.isGameFinished()) {
                     finishGame();

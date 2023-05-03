@@ -9,7 +9,9 @@ import org.example.runner.gui.ConsoleGameGui;
 import org.example.runner.gui.GameGui;
 import org.example.runner.gui.GraphicalGameGui;
 import org.example.runner.players.ComputerPlayer;
+import org.example.runner.players.GuiPlayer;
 import org.example.runner.players.Player;
+import org.example.runner.players.algorithms.AlphaBeta;
 import org.example.runner.players.algorithms.Minimax;
 import org.example.runner.players.heuristics.CornersHeuristic;
 import org.example.runner.players.heuristics.RandomHeuristic;
@@ -50,8 +52,9 @@ public class Main {
     public static void main(String[] args) {
 
         GameGui gameGui = new GraphicalGameGui();
-        Player playerA = new ComputerPlayer("A", Color.BLACK, new Minimax(new CornersHeuristic(), 5));
-        Player playerB = new ComputerPlayer("B", Color.WHITE, new Minimax(new TilesCountHeuristic(), 1));
+        Player playerA = new ComputerPlayer("A", Color.BLACK, new Minimax(new TilesCountHeuristic(), 3));
+        Player playerB = new ComputerPlayer("B", Color.WHITE, new AlphaBeta(new TilesCountHeuristic(), 5));
+        //Player playerB = new GuiPlayer("B", Color.WHITE);
 
 
         GameRunner gameRunner = new GameRunnerImpl(gameGui, playerA, playerB);

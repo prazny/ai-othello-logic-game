@@ -193,7 +193,7 @@ public class Game {
 
             isPlayerAMove = !isPlayerAMove;
 
-            if (i > 0) {
+            if (i == 2) {
                 finishGame();
                 return;
             }
