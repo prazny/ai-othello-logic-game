@@ -192,6 +192,7 @@ public class Game {
                 return;
 
             isPlayerAMove = !isPlayerAMove;
+            updateValidMoves();
 
             if (i == 2) {
                 finishGame();
@@ -210,12 +211,14 @@ public class Game {
 
     private void calculateStats() {
         discCount = new HashMap<>();
+        discCount.put(playerA, 0);
+        discCount.put(playerB, 0);
 
         IntStream.range(0, 8).forEachOrdered(row -> {
             IntStream.range(0, 8).forEachOrdered(col -> {
                 Player player = board.getValue(row, col);
                 if (player != null) {
-                    discCount.put(player, discCount.getOrDefault(player, 0) + 1);
+                    discCount.put(player, discCount.get(player) + 1);
                 }
             });
         });

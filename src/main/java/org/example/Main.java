@@ -54,11 +54,12 @@ public class Main {
         GameGui gameGui = new GraphicalGameGui();
         Player playerA = new ComputerPlayer("A", Color.BLACK, new Minimax(new TilesCountHeuristic(), 3));
         Player playerB = new ComputerPlayer("B", Color.WHITE, new AlphaBeta(new TilesCountHeuristic(), 5));
+        //Player playerA = new GuiPlayer("A", Color.BLACK);
         //Player playerB = new GuiPlayer("B", Color.WHITE);
 
 
         GameRunner gameRunner = new GameRunnerImpl(gameGui, playerA, playerB);
-        //GameRunner gameRunner = new GameRunnerImpl(gameGui, playerA, playerB, getBoardFromConsole(playerA, playerB));
+        //GameRunner gameRunner = new GameRunnerImpl(gameGui, playerA, playerB, getBoardFromConsole(playerA, playerB), false);
         gameRunner.run();
 
     }

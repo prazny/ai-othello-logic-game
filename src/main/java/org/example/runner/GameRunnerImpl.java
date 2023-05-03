@@ -23,6 +23,11 @@ public class GameRunnerImpl implements org.example.runner.GameRunner {
         this.gameGui = gameGui;
     }
 
+    public GameRunnerImpl(GameGui gameGui, Player playerA, Player playerB, Player[][] board, boolean isPlayerAMove) {
+        game = new Game(playerA, playerB, board, isPlayerAMove, null);
+        this.gameGui = gameGui;
+    }
+
 
     @Override
     public void run() {
