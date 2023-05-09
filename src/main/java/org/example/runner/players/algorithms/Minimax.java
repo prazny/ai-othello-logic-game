@@ -25,7 +25,6 @@ public class Minimax implements Algorithm {
     public Point getNextMove(Game game, Player player) {
         this.player = player;
         Node node = minimax(game, treeDepth);
-        System.out.println("returned: " + node.getMove());
         return node.getMove();
     }
 
@@ -36,7 +35,7 @@ public class Minimax implements Algorithm {
         if (depth == 0) return new Node(null, heuristic.calculate(game, player));
 
         Point bestMove = null;
-        int bestScore;
+        double bestScore;
         if (game.getCurrentPlayer() == player) {
             bestScore = Integer.MIN_VALUE;
         } else {
@@ -52,8 +51,9 @@ public class Minimax implements Algorithm {
 
                 Node node = minimax(gameCpy.getGameCopy(), depth - 1);
 
-                int score = node.getScore();
-                if ((game.getCurrentPlayer() == player && score > bestScore) || (game.getCurrentPlayer() != player && score < bestScore)) {
+                double score = node.getScore();
+                if ((game.getCurrentPlayer() == player && score > bestScore)
+                        || (game.getCurrentPlayer() != player && score < bestScore)) {
                     bestScore = score;
                     bestMove = move;
                 }

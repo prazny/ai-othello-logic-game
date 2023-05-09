@@ -149,9 +149,11 @@ public class Game {
 
     public void makeMove(Point move) throws InvalidMove, GameFinished {
         if (isGameFinished) throw new GameFinished();
+        if (getValidMoves().size() == 0 && move == null) skipPlayer();
         if (!isValidMove(move)) throw new InvalidMove();
 
 
+        assert move != null;
         board.setTile(move.x, move.y, getCurrentPlayer());
         lastMove = move;
 
@@ -192,9 +194,10 @@ public class Game {
             if (validMoves.size() > 0)
                 return;
 
-            nextRound();
+            isPlayerAMove = !isPlayerAMove;
+            updateValidMoves();
 
-            if (i > 1) {
+            if (i == 1) {
                 finishGame();
                 return;
             }

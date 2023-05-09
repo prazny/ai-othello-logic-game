@@ -4,8 +4,8 @@ import java.awt.*;
 
 public class Node {
     private final Point move;
-    private final int score;
-    public Node(Point move, int score) {
+    private final double score;
+    public Node(Point move, double score) {
         this.move = move;
         this.score = score;
     }
@@ -14,7 +14,7 @@ public class Node {
         return move;
     }
 
-    public int getScore() {
+    public double getScore() {
         return score;
     }
 }

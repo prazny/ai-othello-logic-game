@@ -7,8 +7,15 @@ import java.awt.*;
 
 public interface Player {
     public Point getNextMove(Game game, GameGui gameGui);
+
     public String getName();
+
     public Color getColor();
 
     public String getColorName();
+
+    public Point getLastMove();
+
+    public long getDecisionTime();
+    public long getDecisionCount();
 }

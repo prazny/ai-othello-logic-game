@@ -12,7 +12,9 @@ public class GuiPlayer extends PlayerAbstract implements Player {
 
     @Override
     public Point getNextMove(Game game, GameGui gameGui) {
-        return gameGui.getNextMove();
+        if(game.getValidMoves().isEmpty()) return null;
+        lastMove = gameGui.getNextMove();
+        return lastMove;
     }
 
 

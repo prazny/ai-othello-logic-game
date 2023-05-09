@@ -1,19 +1,19 @@
 package org.example.runner.players.heuristics;
 
 import org.example.domain.game.Game;
-import org.example.runner.players.ComputerPlayer;
+import org.example.domain.game.exceptions.GameFinished;
 import org.example.runner.players.Player;
 
-import java.util.Random;
-
-public class RandomHeuristic implements Heuristic {
+public class MobilityHeuristic implements Heuristic{
+    @Override
     public double calculate(Game game, Player player) {
-        Random random = new Random();
-        return random.nextInt(0, 64);
+        if(game.isGameFinished()) return 64.0;
+        return 64 - game.getValidMoves().size();
+
     }
 
     @Override
     public String getShortName() {
-        return "Random";
+        return "Mobility";
     }
 }

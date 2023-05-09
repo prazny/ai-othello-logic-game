@@ -10,6 +10,7 @@ public class ComputerPlayer extends PlayerAbstract implements Player {
     Algorithm algorithm;
     int treeDepth = 5;
 
+
     public ComputerPlayer(String name, Color color, Algorithm algorithm) {
         super(name, color);
         this.algorithm = algorithm;
@@ -22,9 +23,13 @@ public class ComputerPlayer extends PlayerAbstract implements Player {
     @Override
     public Point getNextMove(Game game, GameGui gameGui) {
         Game gameCpy = game.getGameCopy();
-        return algorithm.getNextMove(gameCpy, this);
-        //return game.getValidMoves().get(0);
-    }
+        if (game.getValidMoves().isEmpty()) return null;
+        long startTime = System.currentTimeMillis();
+        decisionCount++;
 
+        lastMove = algorithm.getNextMove(gameCpy, this);
+        decisionTime += System.currentTimeMillis() - startTime;
+        return lastMove;
+    }
 
 }

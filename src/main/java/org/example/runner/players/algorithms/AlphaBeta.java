@@ -26,11 +26,11 @@ public class AlphaBeta implements Algorithm {
     public Point getNextMove(Game game, Player player) {
         this.player = player;
         Node node = alphaBeta(game, treeDepth, Float.MIN_VALUE, Float.MAX_VALUE);
-        System.out.println("returned: " + node.getMove());
+       // System.out.println("returned: " + node.getMove());
         return node.getMove();
     }
 
-    private Node alphaBeta(Game game, int depth, float alpha, float beta) {
+    private Node alphaBeta(Game game, int depth, double alpha, double beta) {
         if (game.isGameFinished()) {
             return new Node(null, heuristic.calculate(game, player));
         }
@@ -38,11 +38,11 @@ public class AlphaBeta implements Algorithm {
 
 
         Point bestMove = null;
-        int bestScore;
+        double bestScore;
         if (game.getCurrentPlayer() == player) {
-            bestScore = Integer.MIN_VALUE;
+            bestScore = Double.MIN_VALUE;
         } else {
-            bestScore = Integer.MAX_VALUE;
+            bestScore = Double.MAX_VALUE;
         }
 
         Game gameCpy;
@@ -52,7 +52,7 @@ public class AlphaBeta implements Algorithm {
                 gameCpy.makeMove(move);
 
                 Node node = alphaBeta(gameCpy.getGameCopy(), depth - 1, alpha, beta);
-                int score = node.getScore();
+                double score = node.getScore();
 
                 if ((game.getCurrentPlayer() == player && score > bestScore) || (game.getCurrentPlayer() != player && score < bestScore)) {
                     bestScore = score;
