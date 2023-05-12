@@ -7,6 +7,7 @@ import org.example.runner.players.Player;
 import org.example.runner.players.heuristics.Heuristic;
 
 import java.awt.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class AlphaBeta implements Algorithm {
     private Heuristic heuristic;
@@ -27,6 +28,7 @@ public class AlphaBeta implements Algorithm {
         this.player = player;
         Node node = alphaBeta(game, treeDepth, Float.MIN_VALUE, Float.MAX_VALUE);
        // System.out.println("returned: " + node.getMove());
+
         return node.getMove();
     }
 
@@ -36,6 +38,7 @@ public class AlphaBeta implements Algorithm {
         }
         if (depth == 0) return new Node(null, heuristic.calculate(game, player));
 
+        int i  = ThreadLocalRandom.current().nextInt(1, 9999999 + 1);
 
         Point bestMove = null;
         double bestScore;
@@ -47,6 +50,11 @@ public class AlphaBeta implements Algorithm {
 
         Game gameCpy;
         try {
+            if(game.getValidMoves().isEmpty()) {
+                game.skipPlayer();
+                return alphaBeta(game.getGameCopy(), depth-1, alpha, beta);
+            }
+
             for (Point move : game.getValidMoves()) {
                 gameCpy = game.getGameCopy();
                 gameCpy.makeMove(move);
@@ -68,6 +76,7 @@ public class AlphaBeta implements Algorithm {
                 if(beta <= alpha) break;
 
             }
+
             return new Node(bestMove, bestScore);
         } catch (GameFinished | InvalidMove gameFinished) {
             throw new RuntimeException();

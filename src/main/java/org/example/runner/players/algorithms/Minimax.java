@@ -7,6 +7,7 @@ import org.example.runner.players.Player;
 import org.example.runner.players.heuristics.Heuristic;
 
 import java.awt.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Minimax implements Algorithm {
     private Heuristic heuristic;
@@ -25,7 +26,11 @@ public class Minimax implements Algorithm {
     public Point getNextMove(Game game, Player player) {
         this.player = player;
         Node node = minimax(game, treeDepth);
-        return node.getMove();
+        Point move = node.getMove();
+        if(move == null) {
+            System.out.println("Null move detected..");
+        }
+        return move;
     }
 
     private Node minimax(Game game, int depth) {
@@ -43,7 +48,14 @@ public class Minimax implements Algorithm {
         }
 
         Game gameCpy;
+
         try {
+
+            if(game.getValidMoves().isEmpty()) {
+                game.skipPlayer();
+                return minimax(game.getGameCopy(), depth-1);
+            }
+
             for (Point move : game.getValidMoves()) {
                 gameCpy = game.getGameCopy();
                 gameCpy.makeMove(move);
@@ -56,13 +68,14 @@ public class Minimax implements Algorithm {
                         || (game.getCurrentPlayer() != player && score < bestScore)) {
                     bestScore = score;
                     bestMove = move;
+
                 }
 
             }
+
             return new Node(bestMove, bestScore);
         } catch (GameFinished | InvalidMove gameFinished) {
             throw new RuntimeException();
         }
-
     }
 }

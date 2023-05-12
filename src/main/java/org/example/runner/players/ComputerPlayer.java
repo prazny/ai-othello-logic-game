@@ -23,7 +23,7 @@ public class ComputerPlayer extends PlayerAbstract implements Player {
     @Override
     public Point getNextMove(Game game, GameGui gameGui) {
         Game gameCpy = game.getGameCopy();
-        if (game.getValidMoves().isEmpty()) return null;
+        if (game.getValidMoves().size() == 0) return null;
         long startTime = System.currentTimeMillis();
         decisionCount++;
 

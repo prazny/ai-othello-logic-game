@@ -14,6 +14,7 @@ import org.example.runner.players.GuiPlayer;
 import org.example.runner.players.Player;
 import org.example.runner.players.algorithms.AlphaBeta;
 import org.example.runner.players.algorithms.Minimax;
+import org.example.runner.players.algorithms.Node;
 import org.example.runner.players.heuristics.*;
 
 import java.awt.*;
@@ -52,16 +53,22 @@ public class Main {
     public static void main(String[] args) {
 
         runGame();
-       // runTest();
+        // runTest();
 
     }
 
     public static void runTest() {
         Heuristic[] heuristics = {
                 new CornersHeuristic(),
-                new RandomHeuristic(),
+                //  new RandomHeuristic(),
                 new TilesCountHeuristic(),
                 new MobilityHeuristic(),
+                new MixedHeuristic(new ArrayList<>(List.of(new MixedHeuristic.MixedHeuristicPair[]{
+                        new MixedHeuristic.MixedHeuristicPair(new CornersHeuristic(), 0.4),
+                        new MixedHeuristic.MixedHeuristicPair(new EdgeHeuristic(), 0.5),
+                        new MixedHeuristic.MixedHeuristicPair(new TilesCountHeuristic(), 1.0),
+                        new MixedHeuristic.MixedHeuristicPair(new MobilityHeuristic(), 1.5),
+                })))
         };
         GameGui gameGui = new NoneGameGui();
 
@@ -80,10 +87,14 @@ public class Main {
 
         for (Heuristic heuristicA : heuristics) {
             System.out.format("%15s", heuristicA.getShortName());
+
             for (Heuristic heuristicB : heuristics) {
 
-                Player playerA = new ComputerPlayer("A", Color.BLACK, new AlphaBeta(heuristicA, 3));
-                Player playerB = new ComputerPlayer("B", Color.WHITE, new AlphaBeta(heuristicB, 3));
+                Player playerA = new ComputerPlayer("A", Color.BLACK, new AlphaBeta(heuristicA, 7));
+                Player playerB = new ComputerPlayer("B", Color.WHITE, new AlphaBeta(heuristicB, 7));
+
+                //  Player playerA = new ComputerPlayer("A", Color.BLACK, new Minimax(heuristicA, 2));
+                // Player playerB = new ComputerPlayer("B", Color.WHITE, new Minimax(heuristicB, 4));
 
                 GameRunner gameRunnerA = new GameRunnerImpl(gameGui, playerA, playerB);
                 gameRunnerA.setNotice(false);
@@ -94,8 +105,7 @@ public class Main {
                 if (statsA.get(playerA) > statsA.get(playerB)) {
                     winners.put(heuristicA, winners.get(heuristicA) + 1);
                     winnerPlayers.put("A", winnerPlayers.get("A") + 1);
-                }
-                else {
+                } else {
                     winners.put(heuristicB, winners.get(heuristicB) + 1);
                     winnerPlayers.put("B", winnerPlayers.get("B") + 1);
                 }
@@ -115,7 +125,7 @@ public class Main {
         }
 
         System.out.format("%15s: \n", "Winners");
-        for(Heuristic heuristic : heuristics) {
+        for (Heuristic heuristic : heuristics) {
             System.out.format("%15s: %s", heuristic.getShortName(), winners.get(heuristic));
         }
         System.out.format("\n");
@@ -126,14 +136,15 @@ public class Main {
 
     public static void runGame() {
         MixedHeuristic mixedHeuristicOne = new MixedHeuristic(new ArrayList<>(List.of(new MixedHeuristic.MixedHeuristicPair[]{
-                new MixedHeuristic.MixedHeuristicPair(new CornersHeuristic(), 0.9),
-                new MixedHeuristic.MixedHeuristicPair(new TilesCountHeuristic(), 2.0),
+                new MixedHeuristic.MixedHeuristicPair(new CornersHeuristic(), 0.4),
+                new MixedHeuristic.MixedHeuristicPair(new EdgeHeuristic(), 0.5),
+                new MixedHeuristic.MixedHeuristicPair(new TilesCountHeuristic(), 1.0),
                 new MixedHeuristic.MixedHeuristicPair(new MobilityHeuristic(), 1.5),
         })));
 
         GameGui gameGui = new GraphicalGameGui();
-        Player playerA = new ComputerPlayer("A", Color.BLACK, new Minimax(mixedHeuristicOne, 5));
-        Player playerB = new ComputerPlayer("B", Color.WHITE, new Minimax(mixedHeuristicOne, 5));
+        Player playerA = new ComputerPlayer("A", Color.BLACK, new AlphaBeta(new TilesCountHeuristic(), 6));
+        Player playerB = new ComputerPlayer("B", Color.WHITE, new AlphaBeta(new TilesCountHeuristic(), 6));
         //Player playerA = new GuiPlayer("A", Color.BLACK);
         //Player playerB = new GuiPlayer("B", Color.WHITE);
 
@@ -143,6 +154,7 @@ public class Main {
         //gameRunner.setRoundNumber(1);
 
         gameRunner.run();
+        System.out.println("Nodes: " + Node.getCount());
     }
 
     public static Player[][] getBoardFromConsole(Player playerA, Player playerB) {

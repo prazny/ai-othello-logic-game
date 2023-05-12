@@ -92,6 +92,7 @@ public class Game {
                     moves.add(new Point(col, row));
             });
         });
+
         this.validMoves = moves;
     }
 
@@ -149,7 +150,10 @@ public class Game {
 
     public void makeMove(Point move) throws InvalidMove, GameFinished {
         if (isGameFinished) throw new GameFinished();
-        if (getValidMoves().size() == 0 && move == null) skipPlayer();
+        if (getValidMoves().size() == 0 && move == null) {
+            skipPlayer();
+            return;
+        }
         if (!isValidMove(move)) throw new InvalidMove();
 
 
@@ -177,6 +181,7 @@ public class Game {
         if (isGameFinished) throw new GameFinished();
 
         nextRound();
+        updateValidMoves();
         checkIfGameIsFinished();
     }
 
@@ -190,19 +195,18 @@ public class Game {
     private void checkIfGameIsFinished() {
         if (isGameFinished) return;
 
-        for (int i = 0; true; i++) {
-            if (validMoves.size() > 0)
-                return;
+        if (validMoves.size() > 0)
+            return;
 
+        isPlayerAMove = !isPlayerAMove;
+        updateValidMoves();
+
+        if (validMoves.size() == 0) {
+            finishGame();
+        } else {
             isPlayerAMove = !isPlayerAMove;
             updateValidMoves();
-
-            if (i == 1) {
-                finishGame();
-                return;
-            }
         }
-
     }
 
     private void finishGame() {
